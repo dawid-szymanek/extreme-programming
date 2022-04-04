@@ -19,12 +19,16 @@ class Main extends React.Component {
       inchValue: 0,
       hourValue: 0,
       minuteValue: 0,
-      secondValue: 0
+      secondValue: 0,
+      kelvinValue: 255.37,
+      fahrenheitValue: 0,
+      celciusValue: 0,
     }
     this.onSelectorChange = this.onSelectorChange.bind(this);
     this.onWeightValueChange = this.onWeightValueChange.bind(this);
     this.onDistanceValueChange = this.onDistanceValueChange.bind(this);
     this.onTimeValueChange = this.onTimeValueChange.bind(this);
+    this.onTemperatureValueChange = this.onTemperatureValueChange.bind(this);
   }
 
   roundNumber(num) {
@@ -38,81 +42,106 @@ class Main extends React.Component {
 
   onWeightValueChange(e) {
     e.preventDefault();
+    let value = e.target.value;
+    if(value<0) value = value*0;
     if(e.target.name=="kilograms") {
-      this.setState({kilogramValue: this.roundNumber(e.target.value),
-        gramValue: this.roundNumber(e.target.value*1000),
-        poundValue: this.roundNumber(e.target.value*2.2046)});
+      this.setState({kilogramValue: this.roundNumber(value),
+        gramValue: this.roundNumber(value*1000),
+        poundValue: this.roundNumber(value*2.2046)});
     }
     if(e.target.name=="grams") {
-      this.setState({gramValue: this.roundNumber(e.target.value),
-        kilogramValue: this.roundNumber(e.target.value/1000),
-        poundValue: this.roundNumber(e.target.value*0.0022046)});
+      this.setState({gramValue: this.roundNumber(value),
+        kilogramValue: this.roundNumber(value/1000),
+        poundValue: this.roundNumber(value*0.0022046)});
     }
     if(e.target.name=="pounds") {
-      this.setState({poundValue: this.roundNumber(e.target.value),
-        gramValue: this.roundNumber(e.target.value/0.0022046),
-        kilogramValue: this.roundNumber(e.target.value/2.2046)});
+      this.setState({poundValue: this.roundNumber(value),
+        gramValue: this.roundNumber(value/0.0022046),
+        kilogramValue: this.roundNumber(value/2.2046)});
     }
   }
 
   onDistanceValueChange(e) {
     e.preventDefault();
+    let value = e.target.value;
+    if(value<0) value = value*0;
     if(e.target.name=="meters") {
-      this.setState({meterValue: this.roundNumber(e.target.value),
-        kilometerValue: this.roundNumber(e.target.value/1000),
-        centimeterValue: this.roundNumber(e.target.value*100),
-        feetValue: this.roundNumber(e.target.value*3.2808399),
-        inchValue: this.roundNumber(e.target.value*39.3700787)});
+      this.setState({meterValue: this.roundNumber(value),
+        kilometerValue: this.roundNumber(value/1000),
+        centimeterValue: this.roundNumber(value*100),
+        feetValue: this.roundNumber(value*3.2808399),
+        inchValue: this.roundNumber(value*39.3700787)});
     }
     if(e.target.name=="kilometers") {
-      this.setState({kilometerValue: this.roundNumber(e.target.value),
-        meterValue: this.roundNumber(e.target.value*1000),
-        centimeterValue: this.roundNumber(e.target.value*100000),
-        feetValue: this.roundNumber(e.target.value*3280.8399),
-        inchValue: this.roundNumber(e.target.value*39370.0787)});
+      this.setState({kilometerValue: this.roundNumber(value),
+        meterValue: this.roundNumber(value*1000),
+        centimeterValue: this.roundNumber(value*100000),
+        feetValue: this.roundNumber(value*3280.8399),
+        inchValue: this.roundNumber(value*39370.0787)});
     }
     if(e.target.name=="centimeters") {
-      this.setState({centimeterValue: this.roundNumber(e.target.value),
-        meterValue: this.roundNumber(e.target.value/100),
-        kilometerValue: this.roundNumber(e.target.value/100000),
-        feetValue: this.roundNumber(e.target.value*0.032808399),
-        inchValue: this.roundNumber(e.target.value*0.393700787)});
+      this.setState({centimeterValue: this.roundNumber(value),
+        meterValue: this.roundNumber(value/100),
+        kilometerValue: this.roundNumber(value/100000),
+        feetValue: this.roundNumber(value*0.032808399),
+        inchValue: this.roundNumber(value*0.393700787)});
     }
     if(e.target.name=="feet") {
-      this.setState({feetValue: this.roundNumber(e.target.value),
-        meterValue: this.roundNumber(e.target.value*0.3048),
-        centimeterValue: this.roundNumber(e.target.value*30.48),
-        kilometerValue: this.roundNumber(e.target.value*0.0003048),
-        inchValue: this.roundNumber(e.target.value*12)});
+      this.setState({feetValue: this.roundNumber(value),
+        meterValue: this.roundNumber(value*0.3048),
+        centimeterValue: this.roundNumber(value*30.48),
+        kilometerValue: this.roundNumber(value*0.0003048),
+        inchValue: this.roundNumber(value*12)});
     }
     if(e.target.name=="inches") {
-      this.setState({inchValue: this.roundNumber(e.target.value),
-        meterValue: this.roundNumber(e.target.value*0.0254),
-        kilometerValue: this.roundNumber(e.target.value*0.00000254),
-        centimeterValue: this.roundNumber(e.target.value*2.54),
-        feetValue: this.roundNumber(e.target.value*0.0833333333)});
+      this.setState({inchValue: this.roundNumber(value),
+        meterValue: this.roundNumber(value*0.0254),
+        kilometerValue: this.roundNumber(value*0.00000254),
+        centimeterValue: this.roundNumber(value*2.54),
+        feetValue: this.roundNumber(value*0.0833333333)});
     }
   }
 
   onTimeValueChange(e) {
     e.preventDefault();
+    let value = e.target.value;
+    if(value<0) value = value*0;
     if(e.target.name=="hours") {
-      this.setState({hourValue: this.roundNumber(e.target.value),
-        minuteValue: this.roundNumber(e.target.value*60),
-        secondValue: this.roundNumber(e.target.value*3600)});
+      this.setState({hourValue: this.roundNumber(value),
+        minuteValue: this.roundNumber(value*60),
+        secondValue: this.roundNumber(value*3600)});
     }
     if(e.target.name=="seconds") {
-      this.setState({secondValue: this.roundNumber(e.target.value),
-        hourValue: this.roundNumber(e.target.value/3600),
-        minuteValue: this.roundNumber(e.target.value/60)});
+      this.setState({secondValue: this.roundNumber(value),
+        hourValue: this.roundNumber(value/3600),
+        minuteValue: this.roundNumber(value/60)});
     }
     if(e.target.name=="minutes") {
-      this.setState({minuteValue: this.roundNumber(e.target.value),
-        secondValue: this.roundNumber(e.target.value*60),
-       hourValue: this.roundNumber(e.target.value/60)});
+      this.setState({minuteValue: this.roundNumber(value),
+        secondValue: this.roundNumber(value*60),
+       hourValue: this.roundNumber(value/60)});
     }
   }
 
+  onTemperatureValueChange(e) {
+    e.preventDefault();
+    let value = e.target.value;
+    if(e.target.name=="kelvin") {
+      this.setState({kelvinValue: this.roundNumber(value),
+        fahrenheitValue: this.roundNumber((((value-273.15)*9)/5)+32),
+        celciusValue: this.roundNumber(value-273.15)});
+    }
+    if(e.target.name=="fahrenheit") {
+      this.setState({fahrenheitValue: this.roundNumber(value),
+        kelvinValue: this.roundNumber((((value-32)*5)/9)+273.15),
+        celciusValue: this.roundNumber((value-32)/1.8)});
+    }
+    if(e.target.name=="celcius") {
+      this.setState({celciusValue: this.roundNumber(value),
+        kelvinValue: this.roundNumber(parseFloat(value)+273.15),
+        fahrenheitValue: this.roundNumber((value*1.8)+32)});
+    }
+  }
 
   render() {
     return(
@@ -134,7 +163,12 @@ class Main extends React.Component {
           hourValue = {this.state.hourValue}
           secondValue = {this.state.secondValue}
           minuteValue = {this.state.minuteValue}
-          onTimeValueChange = {this.onTimeValueChange}/>
+          onTimeValueChange = {this.onTimeValueChange}
+          
+          kelvinValue = {this.state.kelvinValue}
+          fahrenheitValue = {this.state.fahrenheitValue}
+          celciusValue = {this.state.celciusValue}
+          onTemperatureValueChange = {this.onTemperatureValueChange}/>
         </>
     );
   }
@@ -147,6 +181,7 @@ function Select(props) {
         <option value="weight">Weight</option>
         <option value="distance">Distance</option>
         <option value="time">Time</option>  
+        <option value="temperature">Temperature</option>
       </select>
     </div>
   );
@@ -170,12 +205,13 @@ function Calculator(props) {
         hourValue = {props.hourValue}
         secondValue = {props.secondValue}
         minuteValue = {props.minuteValue}
-        onTimeValueChange = {props.onTimeValueChange}
-  />;
+        onTimeValueChange = {props.onTimeValueChange}/>;
+  if(props.selectorValue=="temperature") calculator=<TemperatureCalculator
+        kelvinValue = {props.kelvinValue}
+        fahrenheitValue = {props.fahrenheitValue}
+        celciusValue = {props.celciusValue}
+        onTemperatureValueChange = {props.onTemperatureValueChange}/>; 
 
-
-
- // if(props.selectorValue=="temperature") calculator=<TemperatureCalculator/>; <option value="temperature">temperature</option>
   return(
     <div id="backgrounds">{calculator}</div>
   );
@@ -206,22 +242,22 @@ function DistanceCalculator(props) {
 function TimeCalculator(props) {
   return(
     <div id="time_calculator">
-    <h2>Minutes</h2><input name="minutes" type="number"  value={props.minuteValue} onChange={props.onTimeValueChange}/><br/>
-    <h2>Seconds</h2><input name="seconds" type="number"  value={props.secondValue} onChange={props.onTimeValueChange}/><br/>
-    <h2>Hours</h2><input  name="hours" type="number" value={props.hourValue} onChange={props.onTimeValueChange}/><br/>
-  </div>
+      <h2>Minutes</h2><input name="minutes" type="number" value={props.minuteValue} onChange={props.onTimeValueChange}/><br/>
+      <h2>Seconds</h2><input name="seconds" type="number" value={props.secondValue} onChange={props.onTimeValueChange}/><br/>
+      <h2>Hours</h2><input  name="hours" type="number" value={props.hourValue} onChange={props.onTimeValueChange}/><br/>
+    </div>
   )
 }
-/*
+
 function TemperatureCalculator(props) {
   return(
     <div id="temperature_calculator">
-    <h2>Kelvins</h2><input type="number"/><br/>
-    <h2>Fahrenheit</h2><input type="number"/><br/>
-    <h2>Celcius</h2><input type="number"/><br/>
-  </div>
+      <h2>Kelvin</h2><input name="kelvin" type="number" value={props.kelvinValue} onChange={props.onTemperatureValueChange}/><br/>
+      <h2>Fahrenheit</h2><input name="fahrenheit" type="number" value={props.fahrenheitValue} onChange={props.onTemperatureValueChange}/><br/>
+      <h2>Celcius</h2><input name="celcius" type="number" value={props.celciusValue} onChange={props.onTemperatureValueChange}/><br/>
+    </div>
   )
-}*/
+}
 
 
 
